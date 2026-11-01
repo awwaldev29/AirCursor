@@ -1,0 +1,65 @@
+# Xcode project definition. Generate AirCursor.xcodeproj with:  xcodegen generate
+name: AirCursor
+options:
+  bundleIdPrefix: com.awwalsrg.aircursor
+  deploymentTarget:
+    macOS: "15.0"
+    watchOS: "11.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    # Set your (free) Apple ID team in Xcode → Signing & Capabilities, or here.
+    DEVELOPMENT_TEAM: ""
+
+packages:
+  AirCursorKit:
+    path: AirCursorKit
+
+targets:
+  AirCursorMac:
+    type: application
+    platform: macOS
+    sources: [MacApp]
+    dependencies:
+      - package: AirCursorKit
+    info:
+      path: MacApp/Info.plist
+      properties:
+        CFBundleDisplayName: AirCursor
+        LSApplicationCategoryType: public.app-category.utilities
+        NSLocalNetworkUsageDescription: AirCursor menerima gerakan dari Apple Watch kamu lewat jaringan lokal.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.awwalsrg.aircursor.mac
+        PRODUCT_NAME: AirCursor
+        # Posting CGEvents to other apps is not allowed from the sandbox.
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: NO
+        GENERATE_INFOPLIST_FILE: NO
+
+  AirCursorWatch:
+    type: application
+    platform: watchOS
+    sources: [WatchApp]
+    dependencies:
+      - package: AirCursorKit
+    info:
+      path: WatchApp/Info.plist
+      properties:
+        CFBundleDisplayName: AirCursor
+        WKApplication: true
+        WKWatchOnly: true
+        WKBackgroundModes: [physical-therapy]
+        NSMotionUsageDescription: AirCursor membaca gerakan tangan untuk menggerakkan kursor Mac.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.awwalsrg.aircursor.watch
+        PRODUCT_NAME: AirCursor
+        GENERATE_INFOPLIST_FILE: NO
