@@ -32,7 +32,7 @@ final class WatchModel: NSObject {
     private(set) var isRunning = false
     private(set) var isMoving = false
 
-    @ObservationIgnored private let streamer = MotionStreamer()
+    @ObservationIgnored private let streamer = MotionStreamer(axes: .wrist)
     @ObservationIgnored private var runtimeSession: WKExtendedRuntimeSession?
 
     override init() {

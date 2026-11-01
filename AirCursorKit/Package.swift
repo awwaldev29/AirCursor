@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "AirCursorKit",
-    platforms: [.macOS(.v15), .watchOS(.v10)],
+    platforms: [.macOS(.v15), .watchOS(.v10), .iOS(.v17)],
     products: [
         .library(name: "AirCursorKit", targets: ["AirCursorKit"]),
     ],

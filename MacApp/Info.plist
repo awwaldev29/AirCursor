@@ -22,7 +22,11 @@
 	<string>1</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.utilities</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_aircursor._tcp</string>
+	</array>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>AirCursor menerima gerakan dari Apple Watch kamu lewat jaringan lokal.</string>
+	<string>AirCursor menerima gerakan dari iPhone atau Apple Watch kamu lewat jaringan lokal.</string>
 </dict>
 </plist>

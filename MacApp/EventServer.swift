@@ -24,6 +24,7 @@ final class EventServer {
             tcp.noDelay = true
         }
         let listener = try NWListener(using: parameters, on: NWEndpoint.Port(rawValue: port)!)
+        listener.service = NWListener.Service(name: deviceName, type: AirCursorProtocol.bonjourType)
         listener.newConnectionHandler = { [weak self] connection in
             self?.accept(connection)
         }

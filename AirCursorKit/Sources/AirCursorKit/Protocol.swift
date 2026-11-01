@@ -7,6 +7,8 @@ public enum AirCursorProtocol {
     public static let pinHeader = "X-AirCursor-PIN"
     public static let eventsPath = "/v1/events"
     public static let pingPath = "/v1/ping"
+    /// Bonjour service type the Mac advertises so the iPhone can find it without typing an IP.
+    public static let bonjourType = "_aircursor._tcp"
 }
 
 public enum ClickKind: String, Codable, Sendable, Equatable {

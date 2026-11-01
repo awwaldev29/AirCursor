@@ -4,7 +4,21 @@ import Foundation
 
 /// Reads the gyroscope, maps it to cursor deltas and streams them to the Mac.
 /// At most one request is in flight; input that arrives meanwhile rides along in the next one (ADR-0001).
+/// Shared by the Watch and iPhone apps.
 final class MotionStreamer: @unchecked Sendable {
+    /// Which gyroscope axes mean "turn left/right" and "tilt up/down" for how the device is held.
+    struct Axes: Sendable {
+        /// Yaw rate in rad/s, positive when turning left.
+        var yaw: @Sendable (CMRotationRate) -> Double
+        /// Pitch rate in rad/s, positive when the pointing end tilts down.
+        var pitch: @Sendable (CMRotationRate) -> Double
+
+        /// Watch on the left wrist, palm down, hand pointing at the screen (ADR-0002).
+        static let wrist = Axes(yaw: { $0.z }, pitch: { $0.y })
+        /// iPhone held flat like a remote, top edge pointing at the screen.
+        static let handheld = Axes(yaw: { $0.z }, pitch: { -$0.x })
+    }
+
     enum SendResult: Sendable {
         case ok
         case unauthorized
@@ -32,9 +46,14 @@ final class MotionStreamer: @unchecked Sendable {
     private let lock = NSLock()
     private var pending = PendingEvents()
     private var mapper = MotionMapper()
+    private let axes: Axes
     private var isMoving = false
     private var lastTimestamp: TimeInterval?
     private var sendTask: Task<Void, Never>?
+
+    init(axes: Axes) {
+        self.axes = axes
+    }
 
     var isMotionAvailable: Bool { motion.isDeviceMotionAvailable }
 
@@ -72,8 +91,8 @@ final class MotionStreamer: @unchecked Sendable {
                 defer { self.lastTimestamp = data.timestamp }
                 guard self.isMoving, let last = self.lastTimestamp else { return }
                 let delta = self.mapper.delta(
-                    rotationRateY: data.rotationRate.y,
-                    rotationRateZ: data.rotationRate.z,
+                    rotationRateY: self.axes.pitch(data.rotationRate),
+                    rotationRateZ: self.axes.yaw(data.rotationRate),
                     dt: data.timestamp - last
                 )
                 self.pending.move(dx: delta.dx, dy: delta.dy)
