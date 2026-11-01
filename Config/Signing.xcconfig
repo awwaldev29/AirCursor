@@ -1,0 +1,5 @@
+// Signing team for all targets. Put your own team in Config/Local.xcconfig (git-ignored):
+//   DEVELOPMENT_TEAM = ABCDE12345
+// Find it in Xcode → Settings → Apple Accounts, or in Signing & Capabilities.
+DEVELOPMENT_TEAM =
+#include? "Local.xcconfig"

@@ -1,0 +1,116 @@
+# Xcode project definition. Generate AirCursor.xcodeproj with:  xcodegen generate
+name: AirCursor
+options:
+  bundleIdPrefix: com.awwalsrg.aircursor
+  deploymentTarget:
+    macOS: "15.0"
+    watchOS: "10.0"
+    iOS: "17.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+
+# DEVELOPMENT_TEAM comes from Config/Local.xcconfig so regenerating never loses it.
+configFiles:
+  Debug: Config/Signing.xcconfig
+  Release: Config/Signing.xcconfig
+
+packages:
+  AirCursorKit:
+    path: AirCursorKit
+
+targets:
+  AirCursorMac:
+    type: application
+    platform: macOS
+    sources: [MacApp]
+    dependencies:
+      - package: AirCursorKit
+    info:
+      path: MacApp/Info.plist
+      properties:
+        CFBundleDisplayName: AirCursor
+        LSApplicationCategoryType: public.app-category.utilities
+        NSLocalNetworkUsageDescription: AirCursor menerima gerakan dari iPhone atau Apple Watch kamu lewat jaringan lokal.
+        NSBonjourServices: [_aircursor._tcp]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.awwalsrg.aircursor.mac
+        PRODUCT_NAME: AirCursor
+        # Posting CGEvents to other apps is not allowed from the sandbox.
+        ENABLE_APP_SANDBOX: NO
+        ENABLE_HARDENED_RUNTIME: NO
+        GENERATE_INFOPLIST_FILE: NO
+
+  AirCursorWatch:
+    type: application
+    platform: watchOS
+    sources: [WatchApp, Shared]
+    dependencies:
+      - package: AirCursorKit
+    info:
+      path: WatchApp/Info.plist
+      properties:
+        CFBundleDisplayName: AirCursor
+        WKApplication: true
+        # Watch-only: free provisioning profiles may only be installed straight from Xcode,
+        # not through the iPhone Watch app, so embedding in the iPhone app does not help.
+        WKWatchOnly: true
+        NSMotionUsageDescription: AirCursor membaca gerakan tangan untuk menggerakkan kursor Mac.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.awwalsrg.aircursor.watch
+        PRODUCT_NAME: AirCursor
+        GENERATE_INFOPLIST_FILE: NO
+
+  AirCursorPhone:
+    type: application
+    platform: iOS
+    sources: [iOSApp, Shared]
+    dependencies:
+      - package: AirCursorKit
+    info:
+      path: iOSApp/Info.plist
+      properties:
+        CFBundleDisplayName: AirCursor
+        UILaunchScreen: {}
+        UIRequiresFullScreen: true
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSLocalNetworkUsageDescription: AirCursor mencari Mac kamu di jaringan lokal dan mengirim gerakan ke sana.
+        NSBonjourServices: [_aircursor._tcp]
+        NSMotionUsageDescription: AirCursor membaca gerakan HP untuk menggerakkan kursor Mac.
+        NSAppTransportSecurity:
+          NSAllowsLocalNetworking: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.awwalsrg.aircursor.phone
+        PRODUCT_NAME: AirCursor
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
+
+schemes:
+  AirCursorMac:
+    build:
+      targets:
+        AirCursorMac: all
+    run:
+      config: Debug
+  AirCursorPhone:
+    build:
+      targets:
+        AirCursorPhone: all
+    run:
+      config: Debug
+  AirCursorWatch:
+    build:
+      targets:
+        AirCursorWatch: all
+    run:
+      config: Debug

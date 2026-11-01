@@ -1,13 +1,13 @@
 # PRD — AirCursor
 
-> Gerakkan tangan, kursor Mac ikut bergerak. Apple Watch sebagai *air mouse*.
+> Gerakkan tangan, kursor Mac ikut bergerak. iPhone atau Apple Watch sebagai *air mouse*.
 
 | | |
 |---|---|
 | **Status** | Draft v1 — MVP |
-| **Owner** | @awwalsrg |
+| **Owner** | @awwaldev29 |
 | **Tanggal** | 1 November 2026 |
-| **Platform** | watchOS 11+ · macOS 15+ |
+| **Platform** | iOS 17+ · watchOS 10+ (Series 4 ke atas) · macOS 15+ |
 
 ---
 
@@ -26,7 +26,7 @@ versi sendiri yang **gratis, open source, dan bisa dipasang dengan Apple ID bias
    (target latensi end-to-end < 100 ms di Wi-Fi rumah).
 2. Klik kiri dengan tap layar jam **atau** gesture *double tap* (pinch jari)
    di Apple Watch Series 9 / Ultra 2 ke atas.
-3. Klik kanan (tekan lama) dan scroll (Digital Crown).
+3. Klik kanan (tombol terpisah) dan scroll (Digital Crown).
 4. "Clutch": jeda gerakan supaya tangan bisa diposisikan ulang tanpa menggeser kursor
    (seperti mengangkat mouse dari meja).
 5. Aman di jaringan lokal: hanya jam yang tahu **PIN** yang boleh menggerakkan kursor.
@@ -57,12 +57,15 @@ tap/pinch untuk klik.
 | F3 | Watch app membaca gyroscope (CoreMotion, 60 Hz) dan mengubahnya jadi delta kursor | P0 |
 | F4 | Watch mengirim delta ke Mac; request ditolak bila PIN salah | P0 |
 | F5 | Klik kiri: tap tombol / double-tap gesture | P0 |
-| F6 | Klik kanan: tekan lama | P1 |
+| F6 | Klik kanan: tombol terpisah | P1 |
 | F7 | Scroll lewat Digital Crown | P1 |
 | F8 | Clutch (Jeda/Lanjut) | P0 |
 | F9 | Pengaturan sensitivitas & balik sumbu X/Y (untuk jam di tangan kanan) | P1 |
 | F10 | Mac menampilkan status "Terhubung" + waktu event terakhir | P1 |
-| F11 | Watch tetap mengirim saat layar redup (extended runtime session) | P2 |
+| F11 | Watch tetap mengirim saat layar redup (extended runtime session) — ditunda, lihat ADR-0004 | P2 |
+| F12 | Aplikasi iPhone sebagai remote (ADR-0003) | P0 |
+| F13 | Mac ditemukan otomatis lewat Bonjour, tanpa ketik IP | P1 |
+| F14 | Mode tahan-untuk-gerak di iPhone (jempol di pad = gerak, tap = klik) | P1 |
 
 ## 5. Kebutuhan non-fungsional
 
@@ -109,6 +112,8 @@ Respon `204` sukses, `401` PIN salah, `400` body tidak valid.
 |-----------|-----|
 | **M0 — Fondasi** | PRD, ADR, repo GitHub, struktur proyek, CI lokal (`swift test`) |
 | **M1 — MVP** | F1–F8: kursor bergerak, klik, clutch, PIN |
+| **M1.5 — iPhone** ✅ | F12–F14: iPhone remote + Bonjour, teruji di iPhone 16 Pro |
+| **M1.6 — Jam di perangkat** ✅ | Teruji di Apple Watch Series 5 (watchOS 10.6.2), jalur instalasi Apple ID gratis didokumentasikan (ADR-0004) |
 | **M2 — Polish** | F9–F11, onboarding, ikon aplikasi |
 | **M3 — Lanjutan** | Mode presenter (next/prev slide), drag, iPhone relay via UDP untuk latensi lebih rendah, GitHub Actions |
 
@@ -125,4 +130,5 @@ Respon `204` sukses, `401` PIN salah, `400` body tidak valid.
 ## 10. Pertanyaan terbuka
 
 - Perlukah mode "pointing" absolut (arah tangan = posisi layar) selain mode relatif?
-- Perlukah iPhone companion app untuk discovery otomatis (Bonjour) agar tidak ketik IP?
+- ~~Perlukah iPhone companion app untuk discovery otomatis (Bonjour)?~~ Ya, lihat ADR-0003.
+- Perlukah jam menerima IP/PIN dari iPhone (WatchConnectivity) supaya tidak perlu mengetik di jam?
