@@ -33,7 +33,6 @@ final class WatchModel: NSObject {
     private(set) var isMoving = false
 
     @ObservationIgnored private let streamer = MotionStreamer(axes: .wrist)
-    @ObservationIgnored private var runtimeSession: WKExtendedRuntimeSession?
 
     override init() {
         let defaults = UserDefaults.standard
@@ -68,15 +67,12 @@ final class WatchModel: NSObject {
         streamer.start(host: host, pin: pin)
         isRunning = true
         setMoving(true)
-        startRuntimeSession()
     }
 
     func stop() {
         streamer.stop()
         isRunning = false
         isMoving = false
-        runtimeSession?.invalidate()
-        runtimeSession = nil
         if case .connected = status { status = .idle }
     }
 
@@ -109,24 +105,4 @@ final class WatchModel: NSObject {
             status = .error(message)
         }
     }
-
-    /// Keeps motion and networking alive when the wrist turns and the screen dims (PRD F11).
-    private func startRuntimeSession() {
-        let session = WKExtendedRuntimeSession()
-        session.delegate = self
-        session.start()
-        runtimeSession = session
-    }
-}
-
-extension WatchModel: WKExtendedRuntimeSessionDelegate {
-    nonisolated func extendedRuntimeSession(
-        _ session: WKExtendedRuntimeSession,
-        didInvalidateWith reason: WKExtendedRuntimeSessionInvalidationReason,
-        error: (any Error)?
-    ) {}
-
-    nonisolated func extendedRuntimeSessionDidStart(_ session: WKExtendedRuntimeSession) {}
-
-    nonisolated func extendedRuntimeSessionWillExpire(_ session: WKExtendedRuntimeSession) {}
 }

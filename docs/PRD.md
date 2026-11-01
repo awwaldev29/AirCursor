@@ -62,7 +62,7 @@ tap/pinch untuk klik.
 | F8 | Clutch (Jeda/Lanjut) | P0 |
 | F9 | Pengaturan sensitivitas & balik sumbu X/Y (untuk jam di tangan kanan) | P1 |
 | F10 | Mac menampilkan status "Terhubung" + waktu event terakhir | P1 |
-| F11 | Watch tetap mengirim saat layar redup (extended runtime session) | P2 |
+| F11 | Watch tetap mengirim saat layar redup (extended runtime session) — ditunda, lihat ADR-0004 | P2 |
 | F12 | Aplikasi iPhone sebagai remote (ADR-0003) | P0 |
 | F13 | Mac ditemukan otomatis lewat Bonjour, tanpa ketik IP | P1 |
 | F14 | Mode tahan-untuk-gerak di iPhone (jempol di pad = gerak, tap = klik) | P1 |
@@ -113,6 +113,7 @@ Respon `204` sukses, `401` PIN salah, `400` body tidak valid.
 | **M0 — Fondasi** | PRD, ADR, repo GitHub, struktur proyek, CI lokal (`swift test`) |
 | **M1 — MVP** | F1–F8: kursor bergerak, klik, clutch, PIN |
 | **M1.5 — iPhone** ✅ | F12–F14: iPhone remote + Bonjour, teruji di iPhone 16 Pro |
+| **M1.6 — Jam di perangkat** ✅ | Teruji di Apple Watch Series 5 (watchOS 10.6.2), jalur instalasi Apple ID gratis didokumentasikan (ADR-0004) |
 | **M2 — Polish** | F9–F11, onboarding, ikon aplikasi |
 | **M3 — Lanjutan** | Mode presenter (next/prev slide), drag, iPhone relay via UDP untuk latensi lebih rendah, GitHub Actions |
 
@@ -130,4 +131,4 @@ Respon `204` sukses, `401` PIN salah, `400` body tidak valid.
 
 - Perlukah mode "pointing" absolut (arah tangan = posisi layar) selain mode relatif?
 - ~~Perlukah iPhone companion app untuk discovery otomatis (Bonjour)?~~ Ya, lihat ADR-0003.
-- Bagaimana membuat pemasangan ke Apple Watch lebih andal (Wi-Fi 2.4 GHz, Bluetooth iPhone)?
+- Perlukah jam menerima IP/PIN dari iPhone (WatchConnectivity) supaya tidak perlu mengetik di jam?

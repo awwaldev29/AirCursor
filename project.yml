@@ -14,8 +14,11 @@ settings:
     MARKETING_VERSION: "0.1.0"
     CURRENT_PROJECT_VERSION: "1"
     CODE_SIGN_STYLE: Automatic
-    # Set your (free) Apple ID team in Xcode → Signing & Capabilities, or here.
-    DEVELOPMENT_TEAM: ""
+
+# DEVELOPMENT_TEAM comes from Config/Local.xcconfig so regenerating never loses it.
+configFiles:
+  Debug: Config/Signing.xcconfig
+  Release: Config/Signing.xcconfig
 
 packages:
   AirCursorKit:
@@ -55,8 +58,9 @@ targets:
       properties:
         CFBundleDisplayName: AirCursor
         WKApplication: true
+        # Watch-only: free provisioning profiles may only be installed straight from Xcode,
+        # not through the iPhone Watch app, so embedding in the iPhone app does not help.
         WKWatchOnly: true
-        WKBackgroundModes: [physical-therapy]
         NSMotionUsageDescription: AirCursor membaca gerakan tangan untuk menggerakkan kursor Mac.
         NSAppTransportSecurity:
           NSAllowsLocalNetworking: true

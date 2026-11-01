@@ -29,10 +29,6 @@
 	<string>AirCursor membaca gerakan tangan untuk menggerakkan kursor Mac.</string>
 	<key>WKApplication</key>
 	<true/>
-	<key>WKBackgroundModes</key>
-	<array>
-		<string>physical-therapy</string>
-	</array>
 	<key>WKWatchOnly</key>
 	<true/>
 </dict>

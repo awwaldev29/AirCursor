@@ -31,8 +31,11 @@ open AirCursor.xcodeproj
 ```
 
 1. **Xcode → Settings → Accounts** → tambahkan Apple ID kamu.
-2. Pilih proyek **AirCursor** → tiap target (**AirCursorMac**, **AirCursorPhone**, **AirCursorWatch**) →
-   **Signing & Capabilities** → *Team* = Apple ID kamu (Personal Team).
+2. Isi Team ID kamu di `Config/Local.xcconfig` (file ini tidak ikut ke Git):
+   ```bash
+   echo "DEVELOPMENT_TEAM = ABCDE12345" > Config/Local.xcconfig && xcodegen generate
+   ```
+   Team ID bisa dilihat di Xcode → target mana saja → **Signing & Capabilities** → *Team*.
 3. **Mac:** pilih scheme `AirCursorMac` → destination *My Mac* → ⌘R.
    Klik **Buka pengaturan Accessibility** di aplikasinya, lalu nyalakan AirCursor.
 4. **iPhone:** colok ke Mac, aktifkan *Settings → Privacy & Security → Developer Mode*.
@@ -44,8 +47,7 @@ open AirCursor.xcodeproj
    Saat pertama kali, buka *Settings → General → VPN & Device Management* di jam/iPhone
    untuk mempercayai sertifikat developer kamu.
    Di jam, masukkan **IP** dan **PIN** yang tampil di aplikasi Mac → **Mulai**.
-   Jam harus tersambung ke Wi-Fi 2.4 GHz yang sama dengan Mac. Kalau Xcode tidak bisa
-   menemukan jam, matikan sementara Bluetooth iPhone supaya jam memakai Wi-Fi.
+   Pemasangan ke jam paling sering gagal di langkah ini. Ikuti **Troubleshooting jam** di bawah.
 
 > Dengan Apple ID gratis, aplikasi di iPhone dan jam kedaluwarsa setelah **7 hari**. Jalankan ⌘R lagi
 > dari Xcode untuk memperpanjang.
@@ -90,9 +92,20 @@ nyalakan *Balik kiri/kanan* atau *Balik atas/bawah*.
 | Kursor tidak bergerak, tapi status Mac "Menerima gerakan" | Izin Accessibility belum aktif, atau hilang setelah rebuild. Matikan lalu nyalakan lagi AirCursor di *Accessibility*. |
 | Jam: "PIN salah" | PIN di Mac diganti. Masukkan PIN yang baru. |
 | iPhone: Mac tidak muncul di daftar | Izinkan *Local Network* untuk AirCursor (Settings → Privacy & Security → Local Network), pastikan Wi-Fi sama, atau ketik IP manual. |
-| Xcode: jam "OS version lower than deployment target" | Xcode belum bisa menjangkau jam. Sambungkan jam ke Wi-Fi 2.4 GHz yang sama dengan Mac dan matikan sementara Bluetooth iPhone. |
 | Jam: timeout / tidak terhubung | Pastikan jaringannya sama, IP benar, dan Firewall macOS mengizinkan AirCursor. |
 | Kursor jalan sendiri | Tekan **Jeda**, atau naikkan deadzone di `MotionSettings`. |
+
+### Troubleshooting jam (Apple ID gratis)
+
+Lihat [ADR-0004](docs/adr/0004-watch-install-with-free-apple-id.md) untuk detailnya.
+
+| Gejala | Solusi |
+|---|---|
+| Xcode: jam *"OS version lower than deployment target"* | Xcode belum bisa menjangkau jam. Sambungkan jam ke **Wi-Fi 2.4 GHz yang sama dengan Mac** (bukan hotspot dari iPhone pasangannya), lalu matikan sementara Bluetooth iPhone. |
+| *"Developer Mode is turned off"* | Di jam: Settings → Privacy & Security → Developer Mode → nyalakan, lalu restart. |
+| *"developer disk image could not be mounted"* / *"transfer already in progress"* | Layar jam tertidur saat transfer. Restart jam, atur Wake Duration ke 70 detik, lalu sentuh layar jam selama proses berlangsung. |
+| Di aplikasi Watch di iPhone, tombol *Install* kembali ke *Install* | Apple tidak mengizinkan aplikasi dari akun gratis dipasang lewat iPhone. Pasang langsung dari Xcode ke jam. |
+| Profil tidak memuat jam yang baru didaftarkan | Hapus profil AirCursor di `~/Library/Developer/Xcode/UserData/Provisioning Profiles`, lalu build ulang. |
 
 ## Struktur proyek
 
@@ -102,6 +115,7 @@ MacApp/         Aplikasi macOS: server lokal + Bonjour + CGEvent untuk menggerak
 iOSApp/         Aplikasi iPhone: remote, cari Mac via Bonjour
 WatchApp/       Aplikasi watchOS
 Shared/         Kode iPhone + jam: MotionStreamer (CoreMotion → HTTP ke Mac)
+Config/         Signing.xcconfig (+ Local.xcconfig pribadi untuk Team ID)
 docs/           PRD dan ADR
 project.yml     Definisi proyek XcodeGen (file .xcodeproj tidak di-commit)
 ```
