@@ -13,7 +13,7 @@ Detail produk ada di [docs/PRD.md](docs/PRD.md), keputusan arsitektur di [docs/a
 ## Kebutuhan
 
 - Mac dengan macOS 15+ dan Xcode 16+
-- Apple Watch dengan watchOS 11+, dipasangkan ke iPhone
+- Apple Watch Series 4 ke atas dengan watchOS 10+, dipasangkan ke iPhone
 - Mac dan jam di **Wi-Fi yang sama** (atau iPhone di dekat jam, di Wi-Fi yang sama)
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen): `brew install xcodegen`
 

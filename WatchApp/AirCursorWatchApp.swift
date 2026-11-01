@@ -72,8 +72,7 @@ struct ControlView: View {
             }
             .buttonStyle(.borderedProminent)
             .tint(model.isMoving ? .green : .gray)
-            // Double tap (pinch) on Series 9 / Ultra 2 and later triggers the primary action.
-            .handGestureShortcut(.primaryAction)
+            .modifier(DoubleTapClick())
 
             HStack {
                 Button(model.isMoving ? "Jeda" : "Lanjut", systemImage: model.isMoving ? "pause.fill" : "hand.point.up.left.fill") {
@@ -130,5 +129,17 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Pengaturan")
+    }
+}
+
+/// Double tap (pinch) on Series 9 / Ultra 2 and later triggers the primary action.
+/// The API only exists on watchOS 11; older watches just use a screen tap.
+private struct DoubleTapClick: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(watchOS 11.0, *) {
+            content.handGestureShortcut(.primaryAction)
+        } else {
+            content
+        }
     }
 }
