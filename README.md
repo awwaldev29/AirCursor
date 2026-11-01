@@ -20,7 +20,7 @@ Detail produk ada di [docs/PRD.md](docs/PRD.md), keputusan arsitektur di [docs/a
 ## Instalasi (gratis, tanpa Apple Developer Program)
 
 ```bash
-git clone <url-repo-ini> && cd AirCursor
+git clone https://github.com/awwaldev29/AirCursor.git && cd AirCursor
 xcodegen generate
 open AirCursor.xcodeproj
 ```

@@ -5,7 +5,7 @@
 | | |
 |---|---|
 | **Status** | Draft v1 — MVP |
-| **Owner** | @awwalsrg |
+| **Owner** | @awwaldev29 |
 | **Tanggal** | 1 November 2026 |
 | **Platform** | watchOS 11+ · macOS 15+ |
 
