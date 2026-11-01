@@ -26,7 +26,7 @@ versi sendiri yang **gratis, open source, dan bisa dipasang dengan Apple ID bias
    (target latensi end-to-end < 100 ms di Wi-Fi rumah).
 2. Klik kiri dengan tap layar jam **atau** gesture *double tap* (pinch jari)
    di Apple Watch Series 9 / Ultra 2 ke atas.
-3. Klik kanan (tekan lama) dan scroll (Digital Crown).
+3. Klik kanan (tombol terpisah) dan scroll (Digital Crown).
 4. "Clutch": jeda gerakan supaya tangan bisa diposisikan ulang tanpa menggeser kursor
    (seperti mengangkat mouse dari meja).
 5. Aman di jaringan lokal: hanya jam yang tahu **PIN** yang boleh menggerakkan kursor.
@@ -57,7 +57,7 @@ tap/pinch untuk klik.
 | F3 | Watch app membaca gyroscope (CoreMotion, 60 Hz) dan mengubahnya jadi delta kursor | P0 |
 | F4 | Watch mengirim delta ke Mac; request ditolak bila PIN salah | P0 |
 | F5 | Klik kiri: tap tombol / double-tap gesture | P0 |
-| F6 | Klik kanan: tekan lama | P1 |
+| F6 | Klik kanan: tombol terpisah | P1 |
 | F7 | Scroll lewat Digital Crown | P1 |
 | F8 | Clutch (Jeda/Lanjut) | P0 |
 | F9 | Pengaturan sensitivitas & balik sumbu X/Y (untuk jam di tangan kanan) | P1 |
